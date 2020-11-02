@@ -111,14 +111,60 @@ public class RumInventoryTunnel implements Tunnel{
 
     @Override
     public Iterator<Integer> iterator(){
-        return tunnel1.listIterator();
+        return new TunnelIterator<Integer>(tunnel1, tunnel2);
     }
 
-    private class TunnelIterator{
-        ListIterator<Integer> firstIterator = tunnel1.listIterator(0);
-        ListIterator<Integer> secondIterator = tunnel2.listIterator(0);
-        public void next(){
-            if(firstIterator.hasNext()) {
+    private class TunnelIterator<Integer> implements Iterator<Integer>{
+        int iterator = 1; //Indicates which iterator is being used of 1 & 2
+        Iterator<Integer> tunnel1Iterator;
+        Iterator<Integer> tunnel2Iterator;
+        int cursor;
+        TunnelIterator(LinkedList<Integer> tunnel1, LinkedList<Integer> tunnel2){
+            tunnel1Iterator = tunnel2.listIterator(0);
+            tunnel2Iterator = tunnel1.listIterator(0);
+        }
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
+        @Override
+        public boolean hasNext(){
+            if (size() < 2)
+                return false;
+            if (tunnel1Iterator.hasNext() != true) {
+                if (tunnel2Iterator.hasNext() != true) {
+                    return false;
+                } else {
+                    iterator = 2;
+                    return true;
+                }
+            }
+            else{
+                return true;
+            }
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
+        @Override
+        public Integer next() throws NoSuchElementException{
+            if (this.hasNext()){
+                if (iterator == 1){
+                    return tunnel1Iterator.next();
+                }
+                else{
+                    return tunnel2Iterator.next();
+                }
+            }
+            else {
+                throw new NoSuchElementException();
             }
         }
     }
