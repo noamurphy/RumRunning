@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 /**
  * A driver class for rum running that executes a number of commands
  * provided by the user of the format "add X Y" or "remove X" where
@@ -9,6 +8,8 @@ import java.util.Scanner;
 public class RumRunningDriver {
     public static void main(String[] args) {
         System.out.println("The rum running driver has started.");
+
+        RumInventoryTunnel rumInventoryTunnel = new RumInventoryTunnel();
 
         int numCommands = 0;
         Scanner in = new Scanner(System.in);
@@ -35,27 +36,40 @@ public class RumRunningDriver {
                 if (command.toLowerCase().equals("add")) {
                     switch (in.next().toLowerCase()) {
                         case "a":
-                            RumInventoryTunnel.addA(in.next());
+                            if(in.hasNextInt()) {
+                                rumInventoryTunnel.addA(in.nextInt());
+                            }
+                            else{
+                                System.out.println("Command " + Integer.toString(1) + " is invalid");
+                            }
                             break;
                         case "b":
-                            RumInventoryTunnel.addB(in.next());
-                            break;
+                            if(in.hasNextInt()) {
+                                rumInventoryTunnel.addB(in.nextInt());
+                            }
+                            else {
+                                System.out.println("Command " + Integer.toString(1) + " is invalid");
+                            }
                         case "c":
-                            RumInventoryTunnel.addC(in.next());
-                            break;
+                            if(in.hasNextInt()) {
+                                rumInventoryTunnel.addC(in.nextInt());
+                            }
+                            else {
+                                System.out.println("Command " + Integer.toString(1) + " is invalid");
+                            }
                         default:
                             System.out.println("Command " + Integer.toString(i) + " is invalid");
                     }
                 } else {
                     switch (in.next().toLowerCase()) {
                         case "a":
-                            RumInventoryTunnel.removeA();
+                            rumInventoryTunnel.removeA();
                             break;
                         case "b":
-                            RumInventoryTunnel.removeB();
+                            rumInventoryTunnel.removeB();
                             break;
                         case "c":
-                            RumInventoryTunnel.removeC();
+                            rumInventoryTunnel.removeC();
                             break;
                         default:
                             System.out.println("Command " + Integer.toString(i) + " is invalid");
